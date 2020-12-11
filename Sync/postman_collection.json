@@ -1,107 +1,583 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-    "version": "test",
-    "title": "SyncGitHub",
-    "license": {
-      "name": "MIT"
-    }
-  },
-  "servers": [
-    {
-      "url": "http://petstore.swagger.io/v1"
-    }
-  ],
-  "paths": {
-    "/user": {
-      "get": {
-        "summary": "Details about a user",
-        "operationId": "listUser",
-        "tags": [
-          "user"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "description": "ID of the user",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Details about a user",
-            "headers": {
-              "x-next": {
-                "description": "A link to the next page of responses",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "User": {
-        "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "tag": {
-            "type": "string"
-          }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "required": [
-          "code",
-          "message"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    }
-  }
+	"info": {
+		"_postman_id": "f362283e-4ce8-4954-a4c9-a50087e68758",
+		"name": "Newman Servicios GIFOLE WS Rest (Jboss)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cancelacion Productos",
+			"item": [
+				{
+					"name": "Registrar cancelacion CARDS - Local -  Jboss",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "189687d0-cf75-4c8b-8831-ae5df06e06b3",
+								"exec": [
+									"pm.test(\"Se ha creado el registro de Cancelación CARDS en BD Gifole\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Verificación de campos tipo String', function() {\r",
+									"    pm.expect(jsonData.data.cliente.codigoCentral).to.be.a('String');\r",
+									"    pm.expect(jsonData.data.cliente.documentoIdentidad.id).to.be.a('String');\r",
+									"    pm.expect(jsonData.data.cliente.documentoIdentidad.numero).to.be.a('String');\r",
+									"    pm.expect(jsonData.data.cliente.nombreCompleto).to.be.a('String');\r",
+									"    pm.expect(jsonData.data.cliente.nombres).to.be.a('String');\r",
+									"});\r",
+									"\r",
+									"pm.test('Validación de longitud de los campos', function() {\r",
+									"    pm.expect(jsonData.data.cliente.codigoCentral).to.have.lengthOf.below(9);\r",
+									"    pm.expect(jsonData.data.cliente.documentoIdentidad.id).to.have.lengthOf(1);\r",
+									"    pm.expect(jsonData.data.cliente.documentoIdentidad.numero).to.have.lengthOf.below(16);\r",
+									"    pm.expect(jsonData.data.cliente.nombreCompleto).to.have.lengthOf.below(101);\r",
+									"    pm.expect(jsonData.data.cliente.nombres).to.have.lengthOf.below(40);\r",
+									"    pm.expect(jsonData.data.producto.id).to.have.lengthOf(1);\r",
+									"});\r",
+									"\r",
+									"pm.test('Validación de tipo de documentoIdentidad.id', function() {\r",
+									"    pm.expect(jsonData.data.cliente.documentoIdentidad.id).to.be.oneOf(['L', 'R', 'E', 'P', 'M', 'T']);\r",
+									"});\r",
+									"\r",
+									"pm.test('Validación de tipo de data.producto.id', function() {\r",
+									"    pm.expect(jsonData.data.producto.id).to.be.oneOf(['2', '3', '4', '5']);\r",
+									"});\r",
+									"\r",
+									"var schema= {\r",
+									"    \"security\": {\r",
+									"    \"usuario\": \"TEVHTw==\",\r",
+									"    \"password\": \"R0lGT0xFX1dT\"\r",
+									"  }\r",
+									"}\r",
+									"\r",
+									"  pm.test('Verificación de Security', function() {\r",
+									"    pm.expect(schema.security.usuario).to.have.lengthOf.below(51);\r",
+									"    pm.expect(schema.security.password).to.have.lengthOf.below(51);\r",
+									"});\r",
+									"\r",
+									"console.log(jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"data\": {\r\n    \"canal\": \"BXIUX\",\r\n    \"cliente\": {\r\n      \"datosContacto\": [\r\n        {\r\n          \"tipo\": {\r\n            \"id\": \"EMAIL\"\r\n          },\r\n          \"valor\": \"dclemente@bbva.com\"\r\n        }\r\n      ],\r\n      \"documentoIdentidad\": {\r\n        \"id\": \"L\",\r\n        \"numero\": \"40356977\"\r\n      },\r\n      \"nombreCompleto\": \"MACHIN ALBERTO CRUZ ROSAS\",\r\n      \"nombres\": \"MACHIN ALBERTO\",\r\n      \"codigoCentral\": \"00002811\",\r\n      \"apellidoPaterno\": \"CRUZ\",\r\n      \"apellidoMaterno\": \"ROSAS\"\r\n    },\r\n    \"id\": \"0011048602004080\",\r\n    \"numeroProducto\": \"4147918213440588\",\r\n    \"producto\": {\r\n      \"id\": 3,\r\n      \"nombre\": \"VISA SIGNATURE\",\r\n      \"tipoProducto\": {\r\n        \"id\": \"CARD\"\r\n      }\r\n    }\r\n  },\r\n  \"security\": {\r\n    \"usuario\": \"TEVHTw==\",\r\n    \"password\": \"R0lGT0xFX1dT\"\r\n  }\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{GIFOLE_WS_REST_LOCAL}}/productos/cancelacion/",
+							"host": [
+								"{{GIFOLE_WS_REST_LOCAL}}"
+							],
+							"path": [
+								"productos",
+								"cancelacion",
+								""
+							]
+						},
+						"description": "Registrar tarjeta one click en Gifole"
+					},
+					"response": [
+						{
+							"name": "Registrar cancelacion CARDS LOCAL -  Jboss",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"data\": {\r\n    \"canal\": \"BXIUX\",\r\n    \"cliente\": {\r\n      \"datosContacto\": [\r\n        {\r\n          \"tipo\": {\r\n            \"id\": \"EMAIL\"\r\n          },\r\n          \"valor\": \"dclemente@bbva.com\"\r\n        }\r\n      ],\r\n      \"documentoIdentidad\": {\r\n        \"id\": \"L\",\r\n        \"numero\": \"40356977\"\r\n      },\r\n      \"nombreCompleto\": \"MACHIN ALBERTO CRUZ ROSAS\",\r\n      \"nombres\": \"MACHIN ALBERTO\",\r\n      \"codigoCentral\": \"00002811\",\r\n      \"apellidoPaterno\": \"CRUZ\",\r\n      \"apellidoMaterno\": \"ROSAS\"\r\n    },\r\n    \"id\": \"0011048602004080\",\r\n    \"numeroProducto\": \"4147918213440588\",\r\n    \"producto\": {\r\n      \"id\": 3,\r\n      \"nombre\": \"VISA SIGNATURE\",\r\n      \"tipoProducto\": {\r\n        \"id\": \"CARD\"\r\n      }\r\n    }\r\n  },\r\n  \"security\": {\r\n    \"usuario\": \"TEVHTw==\",\r\n    \"password\": \"R0lGT0xFX1dT\"\r\n  }\r\n}",
+									"options": {
+										"raw": {}
+									}
+								},
+								"url": {
+									"raw": "{{GIFOLE_WS_REST_LOCAL}}/productos/cancelacion/",
+									"host": [
+										"{{GIFOLE_WS_REST_LOCAL}}"
+									],
+									"path": [
+										"productos",
+										"cancelacion",
+										""
+									]
+								},
+								"description": "Registrar tarjeta one click en Gifole"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "cache-control",
+									"value": "no-cache, no-store",
+									"name": "cache-control",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"key": "connection",
+									"value": "keep-alive",
+									"name": "connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json;charset=UTF-8",
+									"name": "content-type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2020 17:07:15 GMT",
+									"name": "date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "expires",
+									"value": "Thu, 01 Jan 1970 00:00:00 GMT",
+									"name": "expires",
+									"description": "Gives the date/time after which the response is considered stale"
+								},
+								{
+									"key": "pragma",
+									"value": "no-cache",
+									"name": "pragma",
+									"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+								},
+								{
+									"key": "server",
+									"value": "JBoss-EAP/7",
+									"name": "server",
+									"description": "A name for the server"
+								},
+								{
+									"key": "transfer-encoding",
+									"value": "chunked",
+									"name": "transfer-encoding",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Undertow/1",
+									"name": "x-powered-by",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"body": "{\"data\":{\"id\":\"0011048602004080\",\"producto\":{\"id\":\"3\",\"nombre\":\"VISA SIGNATURE\",\"tipoProducto\":{\"id\":\"CARD\"}},\"numeroProducto\":\"4147918213440588\",\"cliente\":{\"codigoCentral\":\"00002811\",\"apellidoPaterno\":\"CRUZ\",\"apellidoMaterno\":\"ROSAS\",\"documentoIdentidad\":{\"id\":\"L\",\"numero\":\"40356977\"},\"datosContacto\":[{\"id\":null,\"tipo\":{\"id\":\"EMAIL\"},\"valor\":\"dclemente@bbva.com\"}],\"nombres\":\"MACHIN ALBERTO\",\"nombreCompleto\":\"MACHIN ALBERTO CRUZ ROSAS\"},\"canal\":\"BXIUX\",\"idRegistro\":\"1302\",\"fechaOperacion\":\"19/10/2020 12:07:15\"}}"
+						},
+						{
+							"name": "rpta ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"data\": {\r\n    \"canal\": \"BXIUX\",\r\n    \"cliente\": {\r\n      \"datosContacto\": [\r\n        {\r\n          \"tipo\": {\r\n            \"id\": \"EMAIL\"\r\n          },\r\n          \"valor\": \"dclemente@bbva.com\"\r\n        }\r\n      ],\r\n      \"documentoIdentidad\": {\r\n        \"id\": \"L\",\r\n        \"numero\": \"40356977\"\r\n      },\r\n      \"nombreCompleto\": \"MACHIN ALBERTO CRUZ ROSAS\",\r\n      \"nombres\": \"MACHIN ALBERTO\",\r\n      \"codigoCentral\": \"00002811\",\r\n      \"apellidoPaterno\": \"CRUZ\",\r\n      \"apellidoMaterno\": \"ROSAS\"\r\n    },\r\n    \"id\": \"0011048602004080\",\r\n    \"numeroProducto\": \"4147918213440588\",\r\n    \"producto\": {\r\n      \"id\": 3,\r\n      \"nombre\": \"VISA SIGNATURE\",\r\n      \"tipoProducto\": {\r\n        \"id\": \"CARD\"\r\n      }\r\n    }\r\n  },\r\n  \"security\": {\r\n    \"usuario\": \"TEVHTw==\",\r\n    \"password\": \"R0lGT0xFX1dT\"\r\n  }\r\n}",
+									"options": {
+										"raw": {}
+									}
+								},
+								"url": {
+									"raw": "{{GIFOLE_WS_REST_LOCAL}}/productos/cancelacion/",
+									"host": [
+										"{{GIFOLE_WS_REST_LOCAL}}"
+									],
+									"path": [
+										"productos",
+										"cancelacion",
+										""
+									]
+								},
+								"description": "Registrar tarjeta one click en Gifole"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "no-cache=\"set-cookie, set-cookie2\"",
+									"name": "Cache-Control",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "Keep-Alive",
+									"name": "Connection",
+									"description": ""
+								},
+								{
+									"key": "Content-Language",
+									"value": "en-US",
+									"name": "Content-Language",
+									"description": ""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Apr 2017 15:44:20 GMT",
+									"name": "Date",
+									"description": ""
+								},
+								{
+									"key": "Expires",
+									"value": "Thu, 01 Dec 1994 16:00:00 GMT",
+									"name": "Expires",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=10, max=100",
+									"name": "Keep-Alive",
+									"description": ""
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"name": "Transfer-Encoding",
+									"description": ""
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Servlet/3.0",
+									"name": "X-Powered-By",
+									"description": ""
+								},
+								{
+									"key": "X-dynaTrace",
+									"value": "PT=41366;PA=1863895710;SP=SP_File_Unico;PS=1366134554",
+									"name": "X-dynaTrace",
+									"description": ""
+								},
+								{
+									"key": "X-dynaTrace-JS-Agent",
+									"value": "true",
+									"name": "X-dynaTrace-JS-Agent",
+									"description": ""
+								},
+								{
+									"key": "dynaTrace",
+									"value": "PT=41366;PA=1863895710;SP=SP_File_Unico;PS=1366134554",
+									"name": "dynaTrace",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\"codigo\":\"11507\",\"listaTcBeneficios\":null,\"listaBeneficios\":null}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Tarjetas",
+			"item": [
+				{
+					"name": "registrar TOC Carretera (Gifole) Local - JBOSS",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a672978f-0fdf-45ec-a27b-39f3e0830d93",
+								"exec": [
+									"pm.test(\"Se ha creado el registro de Cancelación CARDS en BD Gifole\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"jsonData = pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test('Verificación de campos tipo Number', function() {\r",
+									"    pm.expect(jsonData.data.id).to.be.a('Number');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check_ID\"), function(){\r",
+									"    pm.expect(jsonData.data.id).to.eql('23484')\r",
+									"}\r",
+									"\r",
+									"var schema = {\r",
+									"  \"data\": {\r",
+									"    \"id\": \"00110504875000928821\",\r",
+									"    \"canal\": \"13000076\",\r",
+									"    \"tipoTarjeta\": {\r",
+									"      \"id\": \"CREDIT_CARD\"\r",
+									"    },\r",
+									"    \"tipoNumeroTarjeta\": {\r",
+									"      \"id\": \"PAN\"\r",
+									"    },\r",
+									"    \"numeroProducto\": \"4042938287265532\",\r",
+									"    \"marca\": {\r",
+									"      \"id\": \"VISA\"\r",
+									"    },\r",
+									"    \"producto\": {\r",
+									"      \"id\": \"F7\",\r",
+									"      \"nombre\": \"VISA CERO BBVA\"\r",
+									"    },\r",
+									"    \"importe\": {\r",
+									"      \"monto\": 10200,\r",
+									"      \"moneda\": \"PEN\"\r",
+									"    },\r",
+									"    \"flagMonedaPrincipal\": 1,\r",
+									"    \"cliente\": {\r",
+									"      \"codigoCentral\": \"27420523\",\r",
+									"      \"primerNombre\": \"JULISSA\",\r",
+									"      \"apellidoPaterno\": \"LAZARO\",\r",
+									"      \"documentoIdentidad\": {\r",
+									"        \"id\": \"L\",\r",
+									"        \"numero\": \"45653298\"\r",
+									"      },\r",
+									"      \"datosContacto\": [\r",
+									"        {\r",
+									"          \"tipo\": {\r",
+									"            \"id\": \"EMAIL\"\r",
+									"          },\r",
+									"          \"valor\": \"dclemente@bbva.com\"\r",
+									"        }\r",
+									"      ]\r",
+									"    },\r",
+									"    \"datosPago\": {\r",
+									"      \"id\": \"94451e27-6b7b-4009-8f63-c6b651b21617\",\r",
+									"      \"frecuencia\": \"MONTHLY\",\r",
+									"      \"dia\": 5\r",
+									"    },\r",
+									"    \"datosEntrega\": [\r",
+									"      {\r",
+									"        \"id\": \"002\",\r",
+									"        \"tipo\": {\r",
+									"          \"id\": \"002\"\r",
+									"        },\r",
+									"        \"destino\": {\r",
+									"          \"id\": \"BRANCH\"\r",
+									"        },\r",
+									"        \"oficina\": {\r",
+									"          \"id\": \"0486\"\r",
+									"        }\r",
+									"      },\r",
+									"      {\r",
+									"        \"id\": \"001\",\r",
+									"        \"tipo\": {\r",
+									"          \"id\": \"001\"\r",
+									"        },\r",
+									"        \"destino\": {\r",
+									"          \"id\": \"DIGITAL_CONTACT\"\r",
+									"        },\r",
+									"        \"contacto\": {\r",
+									"          \"id\": \"dclemente@bbva.com\",\r",
+									"          \"tipoContacto\": {\r",
+									"            \"id\": \"SPECIFIC\"\r",
+									"          },\r",
+									"          \"tipo\": {\r",
+									"            \"id\": \"EMAIL\"\r",
+									"          },\r",
+									"          \"valor\": \"dclemente@bbva.com\"\r",
+									"        }\r",
+									"      }\r",
+									"    ],\r",
+									"    \"programaBeneficios\": {\r",
+									"      \"id\": \"LIFE_POINTS\",\r",
+									"      \"nombre\": \"LIFE_POINTS\"\r",
+									"    },\r",
+									"    \"estado\": 3,\r",
+									"    \"oferta\": {\r",
+									"      \"id\": \"L00045653298202012002\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"security\": {\r",
+									"    \"usuario\": \"TEVHTw==\",\r",
+									"    \"password\": \"R0lGT0xFX1dT\"\r",
+									"  }\r",
+									"}\r",
+									"\r",
+									"pm.test('Verificación de campos tipo String', function() {\r",
+									"    pm.expect(schema.data.canal).to.be.a('String');\r",
+									"});\r",
+									"\r",
+									"pm.test('Verificación de Security', function() {\r",
+									"    pm.expect(schema.security.usuario).to.have.lengthOf.below(51);\r",
+									"    pm.expect(schema.security.password).to.have.lengthOf.below(51);\r",
+									"});\r",
+									"\r",
+									"console.log(jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"id\": \"00110504875000928821\",\n    \"canal\": \"13000076\",\n    \"tipoTarjeta\": {\n      \"id\": \"CREDIT_CARD\"\n    },\n    \"tipoNumeroTarjeta\": {\n      \"id\": \"PAN\"\n    },\n    \"numeroProducto\": \"4042938287265532\",\n    \"marca\": {\n      \"id\": \"VISA\"\n    },\n    \"producto\": {\n      \"id\": \"F7\",\n      \"nombre\": \"VISA CERO BBVA\"\n    },\n    \"importe\": {\n      \"monto\": 10200,\n      \"moneda\": \"PEN\"\n    },\n    \"flagMonedaPrincipal\": 1,\n    \"cliente\": {\n      \"codigoCentral\": \"27420523\",\n      \"primerNombre\": \"JULISSA\",\n      \"apellidoPaterno\": \"LAZARO\",\n      \"documentoIdentidad\": {\n        \"id\": \"L\",\n        \"numero\": \"45653298\"\n      },\n      \"datosContacto\": [\n        {\n          \"tipo\": {\n            \"id\": \"EMAIL\"\n          },\n          \"valor\": \"dclemente@bbva.com\"\n        }\n      ]\n    },\n    \"datosPago\": {\n      \"id\": \"94451e27-6b7b-4009-8f63-c6b651b21617\",\n      \"frecuencia\": \"MONTHLY\",\n      \"dia\": 5\n    },\n    \"datosEntrega\": [\n      {\n        \"id\": \"002\",\n        \"tipo\": {\n          \"id\": \"002\"\n        },\n        \"destino\": {\n          \"id\": \"BRANCH\"\n        },\n        \"oficina\": {\n          \"id\": \"0486\"\n        }\n      },\n      {\n        \"id\": \"001\",\n        \"tipo\": {\n          \"id\": \"001\"\n        },\n        \"destino\": {\n          \"id\": \"DIGITAL_CONTACT\"\n        },\n        \"contacto\": {\n          \"id\": \"dclemente@bbva.com\",\n          \"tipoContacto\": {\n            \"id\": \"SPECIFIC\"\n          },\n          \"tipo\": {\n            \"id\": \"EMAIL\"\n          },\n          \"valor\": \"dclemente@bbva.com\"\n        }\n      }\n    ],\n    \"programaBeneficios\": {\n      \"id\": \"LIFE_POINTS\",\n      \"nombre\": \"LIFE_POINTS\"\n    },\n    \"estado\": 3,\n    \"oferta\": {\n      \"id\": \"L00045653298202012002\"\n    }\n  },\n  \"security\": {\n    \"usuario\": \"TEVHTw==\",\n    \"password\": \"R0lGT0xFX1dT\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{GIFOLE_WS_REST_LOCAL}}/tarjetas/registrar",
+							"host": [
+								"{{GIFOLE_WS_REST_LOCAL}}"
+							],
+							"path": [
+								"tarjetas",
+								"registrar"
+							]
+						},
+						"description": "Registrar tarjeta one click en Gifole"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "https://api.getpostman.com/collections/f362283e-4ce8-4954-a4c9-a50087e68758?apikey=PMAK-5fd139673e87a000527d1691-add3ae40a5f61f0391f33a435572f119e2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.getpostman.com/collections/f362283e-4ce8-4954-a4c9-a50087e68758?apikey=PMAK-5fd139673e87a000527d1691-add3ae40a5f61f0391f33a435572f119e2",
+					"protocol": "https",
+					"host": [
+						"api",
+						"getpostman",
+						"com"
+					],
+					"path": [
+						"collections",
+						"f362283e-4ce8-4954-a4c9-a50087e68758"
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "PMAK-5fd139673e87a000527d1691-add3ae40a5f61f0391f33a435572f119e2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/user/repos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/user/repos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"repos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.getpostman.com/collections?apikey=PMAK-5fd139673e87a000527d1691-add3ae40a5f61f0391f33a435572f119e2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.getpostman.com/collections?apikey=PMAK-5fd139673e87a000527d1691-add3ae40a5f61f0391f33a435572f119e2",
+					"protocol": "https",
+					"host": [
+						"api",
+						"getpostman",
+						"com"
+					],
+					"path": [
+						"collections"
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "PMAK-5fd139673e87a000527d1691-add3ae40a5f61f0391f33a435572f119e2"
+						}
+					]
+				},
+				"description": "Preba newman"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d170178e-3feb-4fa0-add5-7b1cce30f571",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "5c3cb07c-9fd9-4525-b126-226c95340ebe",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
 }
